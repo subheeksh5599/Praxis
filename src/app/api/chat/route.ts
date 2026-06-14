@@ -76,22 +76,22 @@ score = completionRate×350 + ratingScore(based on 5-star)×250 + volumeScore(ca
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages, apiKey, model } = await req.json();
+    const { messages, model } = await req.json();
 
-    const key = apiKey || process.env.OPENAI_API_KEY;
+    const key = process.env.OPENAI_API_KEY;
 
     if (!key) {
-      return NextResponse.json({ error: "No API key configured. Set OPENAI_API_KEY on the server." }, { status: 400 });
+      return NextResponse.json({ error: "No API key configured" }, { status: 400 });
     }
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api.novita.ai/v3/openai/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${key}`,
       },
       body: JSON.stringify({
-        model: model || "gpt-4o-mini",
+        model: model || "deepseek/deepseek-v3.2",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           ...messages,

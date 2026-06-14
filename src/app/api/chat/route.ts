@@ -84,14 +84,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No API key configured" }, { status: 400 });
     }
 
-    const response = await fetch("https://api.novita.ai/v3/openai/chat/completions", {
+    const response = await fetch("https://api.fireworks.ai/inference/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${key}`,
       },
       body: JSON.stringify({
-        model: model || "deepseek/deepseek-v4-pro",
+        model: model || "accounts/fireworks/models/llama-v3p1-70b-instruct",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           ...messages,

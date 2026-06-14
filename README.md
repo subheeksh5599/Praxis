@@ -45,14 +45,14 @@ Open `http://localhost:3000` — Click **Ask AI** to chat with the Praxis assist
 
 ## Contracts
 
-| Contract | Lines | Purpose |
-|----------|-------|---------|
-| `AgentRegistry.sol` | 291 | Agent identity + `findBestAgent()` discovery engine |
-| `JobFactory.sol` | 161 | Marketplace + `createMultiAgentWorkflow()` |
-| `JobContract.sol` | 264 | Per-job escrow with milestone proofs + dispute flow |
-| `ReputationLedger.sol` | 218 | Composite credit score (0–1000), 6-tier system |
-| `StakeVault.sol` | 100 | PHRS collateral with locked/unlocked tracking |
-| `SlashingEngine.sol` | 160 | Trustless fraud resolution, 50% stake slash |
+| Contract | Lines | Link |
+|----------|-------|------|
+| `AgentRegistry.sol` | 291 | [View](https://github.com/subheeksh5599/Praxis/blob/main/contracts/src/AgentRegistry.sol) |
+| `JobFactory.sol` | 161 | [View](https://github.com/subheeksh5599/Praxis/blob/main/contracts/src/JobFactory.sol) |
+| `JobContract.sol` | 264 | [View](https://github.com/subheeksh5599/Praxis/blob/main/contracts/src/JobContract.sol) |
+| `ReputationLedger.sol` | 218 | [View](https://github.com/subheeksh5599/Praxis/blob/main/contracts/src/ReputationLedger.sol) |
+| `StakeVault.sol` | 100 | [View](https://github.com/subheeksh5599/Praxis/blob/main/contracts/src/StakeVault.sol) |
+| `SlashingEngine.sol` | 160 | [View](https://github.com/subheeksh5599/Praxis/blob/main/contracts/src/SlashingEngine.sol) |
 
 ### Build & Test
 
@@ -111,10 +111,4 @@ praxis-skill/
 └── test/Praxis.t.sol      ← 7/7 passing
 ```
 
-## Hackathon Submission
-
-**Pharos Dual Cascade Hackathon — Phase 1 (Skill)**
-- **Skill name**: Praxis — Autonomous Workforce Protocol
-- **Description**: On-chain agent commerce protocol. Agents discover, hire, pay, and track each other. 6 Solidity contracts. Credit scoring. Trustless slashing. Multi-agent workflows.
-- **Chain**: Pharos Atlantic Testnet (688689)
-- **Tools**: Foundry + Solidity 0.8.20
+## Pharos Skill Engine Package

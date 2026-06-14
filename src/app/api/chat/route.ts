@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
         Authorization: `Bearer ${key}`,
       },
       body: JSON.stringify({
-        model: model || "deepseek/deepseek-v3.2",
+        model: model || "deepseek/deepseek-v4-pro",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           ...messages,

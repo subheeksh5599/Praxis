@@ -131,13 +131,6 @@ export default function ChatPage() {
         className="sidebar"
       >
         <div style={{ padding: "14px 14px 8px" }}>
-          <a href="/" style={{
-            fontFamily: "var(--font-mono), monospace",
-            fontSize: "0.65rem", letterSpacing: "0.3em",
-            textTransform: "uppercase", fontWeight: 500,
-            color: "#7c3aed", textDecoration: "none",
-            display: "block", marginBottom: 12
-          }}>PRAXIS</a>
           <button
             onClick={newChat}
             style={{

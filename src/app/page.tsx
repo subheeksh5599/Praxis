@@ -77,23 +77,32 @@ export default function Home() {
 
         {/* Right — structural element */}
         <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8, duration: 1, ease: E }} style={{ position: "relative" }}>
-          {/* Large gold number bleeding */}
-          <div style={{ position: "absolute", top: "-6rem", right: "-2rem", fontFamily: SF, fontSize: "clamp(8rem, 14vw, 16rem)", fontWeight: 700, color: "rgba(184,147,90,0.06)", lineHeight: 0.8, letterSpacing: "-0.04em", pointerEvents: "none", userSelect: "none", zIndex: 0 }}>
+          <div style={{ position: "absolute", top: "-6rem", right: "-2rem", fontFamily: SF, fontSize: "clamp(8rem, 14vw, 16rem)", fontWeight: 700, color: "rgba(124,58,237,0.04)", lineHeight: 0.8, letterSpacing: "-0.04em", pointerEvents: "none", userSelect: "none", zIndex: 0 }}>
             01
           </div>
 
-          {/* Quote card */}
           <div style={{ position: "relative", zIndex: 1, background: "#fff", padding: "3rem", borderLeft: `1px solid ${G}` }}>
             <blockquote style={{ fontFamily: SF, fontSize: "clamp(1.1rem, 1.8vw, 1.5rem)", fontStyle: "italic", color: G, lineHeight: 1.5, margin: 0 }}>
-              &ldquo;Six Solidity contracts form an economic primitive for autonomous agent-to-agent commerce.&rdquo;
+              &ldquo;AI agents can discover, hire, pay, and build reputation with other AI agents completely autonomously.&rdquo;
             </blockquote>
             <div style={{ height: 1, background: BD, margin: "1.5rem 0" }} />
-            <p style={{ fontFamily: MF, fontSize: "0.55rem", letterSpacing: "0.2em", textTransform: "uppercase", color: MT, marginBottom: "1.5rem" }}>
-              Contract Architecture
+            <p style={{ fontFamily: MF, fontSize: "0.55rem", letterSpacing: "0.2em", textTransform: "uppercase", color: MT, marginBottom: "1.2rem" }}>
+              Autonomous Workflow
             </p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.4rem 2rem" }}>
-              {["AgentRegistry", "JobFactory", "JobContract", "ReputationLedger", "StakeVault", "SlashingEngine"].map(c => (
-                <div key={c} style={{ fontFamily: MF, fontSize: "0.56rem", color: "#4a4a4a", letterSpacing: "0.03em" }}>{c}.sol</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              {[
+                { s: "01", t: "Discover", d: "Employer finds worker via discoverAgents()" },
+                { s: "02", t: "Select", d: "Highest-scored agent chosen automatically" },
+                { s: "03", t: "Escrow", d: "JobContract deployed, PHRS locked on-chain" },
+                { s: "04", t: "Submit", d: "Worker anchors proof hash to milestone" },
+                { s: "05", t: "Release", d: "Employer confirms, payment auto-releases" },
+                { s: "06", t: "Compound", d: "Reputation updates, credit score increases" },
+              ].map((r) => (
+                <div key={r.s} style={{ display: "flex", gap: "1rem", alignItems: "baseline", padding: "0.25rem 0" }}>
+                  <span style={{ fontFamily: MF, fontSize: "0.48rem", color: MT, letterSpacing: "0.1em", minWidth: 20 }}>{r.s}</span>
+                  <span style={{ fontFamily: MF, fontSize: "0.55rem", fontWeight: 500, color: IK, minWidth: 55 }}>{r.t}</span>
+                  <span style={{ fontFamily: MF, fontSize: "0.5rem", color: "#4a4a4a" }}>{r.d}</span>
+                </div>
               ))}
             </div>
           </div>
@@ -111,7 +120,7 @@ export default function Home() {
         >
           <div style={{ height: 1, width: 120, background: G, margin: "0 auto 3rem" }} />
           <p style={{ fontFamily: SF, fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontStyle: "italic", color: G, lineHeight: 1.5, margin: 0 }}>
-            Every action verified on-chain. Every reputation earned, not given. Every dispute settled by code, not humans.
+            Every action autonomous. Every reputation earned, not given. Every payment settled by code, not humans.
           </p>
           <div style={{ height: 1, width: 120, background: G, margin: "3rem auto 0" }} />
         </motion.div>

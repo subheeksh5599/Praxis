@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import SplashScreen from "@/components/SplashScreen";
 
 /* ── SHARED ─────────────────────── */
-const G = "#b8935a";
+const G = "#7c3aed";
 const IK = "#0a0a0a";
 const MT = "#a3a3a3";
 const BD = "#e5e5e5";
@@ -14,17 +14,6 @@ const MF = "var(--font-mono)";
 const E = [0.25, 0.46, 0.45, 0.94] as const;
 
 const vp = { once: true, margin: "-60px" as const };
-
-const RevealLine = ({ color = BD }: { color?: string }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [seen, setSeen] = useState(false);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setSeen(true) }, { threshold: 0.05 });
-    o.observe(el); return () => o.disconnect();
-  }, []);
-  return <div ref={ref} style={{ height: 1, background: color, margin: "0 2.5rem", transform: seen ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left", transition: "transform 1.4s cubic-bezier(0.25,0.46,0.45,0.94)" }} />;
-};
 
 /* ── PAGE ──────────────────────── */
 export default function Home() {
@@ -52,19 +41,16 @@ export default function Home() {
     <main>
       {/* ── NAV ── */}
       <div className={`nav-fixed ${navVis ? "" : "hidden"}`}>
-        <span><span className="nav-gold">●</span> PRAXIS</span>
-        <a className="nav-cta" href="/chat">Ask AI</a>
+        <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+          <span>PRAXIS</span>
+          <a className="nav-cta" href="/chat">Ask AI</a>
+        </div>
       </div>
 
       {/* ═══════════════════════════ HERO ═══════════════════════════ */}
       <section style={{ minHeight: "100vh", display: "grid", gridTemplateColumns: "5fr 4fr", gap: "4rem", alignItems: "center", padding: "8rem 2.5rem 4rem" }}>
         {/* Left — gradient of typography */}
         <div>
-          {/* Date line */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.6 }} style={{ fontFamily: MF, fontSize: "0.55rem", letterSpacing: "0.25em", textTransform: "uppercase", color: MT, marginBottom: "3rem" }}>
-            Autonomous Workforce Protocol &nbsp;·&nbsp; Pharos
-          </motion.div>
-
           {/* Force the headline to be wide and editorial */}
           <div style={{ position: "relative", zIndex: 2 }}>
             <h1 style={{ fontFamily: SF, fontSize: "clamp(4rem, 8vw, 9rem)", fontWeight: 700, lineHeight: 0.92, letterSpacing: "-0.035em", color: IK, margin: 0 }}>
@@ -115,8 +101,6 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <RevealLine />
-
       {/* ═══════════════════════════ MANIFESTO ═══════════════════════════ */}
       <section style={{ padding: "10rem 2.5rem 6rem", display: "flex", justifyContent: "center" }}>
         <motion.div
@@ -133,8 +117,6 @@ export default function Home() {
           <div style={{ height: 1, width: 120, background: G, margin: "3rem auto 0" }} />
         </motion.div>
       </section>
-
-      <RevealLine />
 
       {/* ═══════════════════════════ STATS ═══════════════════════════ */}
       <div ref={statsRef} style={{ padding: "8rem 0", position: "relative", overflow: "hidden" }}>
@@ -161,8 +143,6 @@ export default function Home() {
         </div>
       </div>
 
-      <RevealLine />
-
       {/* ═══════════════════════════ DEMO TIMELINE ═══════════════════════════ */}
       <section style={{ padding: "8rem 2.5rem" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6rem", marginBottom: "5rem", alignItems: "end" }}>
@@ -177,7 +157,7 @@ export default function Home() {
           </motion.p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0", borderTop: `1px solid ${BD}` }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0" }}>
           {[
             { n: "01", a: "ResearchAgent", t: "Stakes 10 PHRS. Registers on-chain with skills, pricing, metadata.", l: "Register" },
             { n: "02", a: "TradingAgent", t: "Browses marketplace. Finds ResearchAgent (4.9). Deploys escrow: BTC analysis, 0.5 PHRS.", l: "Hire" },
@@ -190,7 +170,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={vp}
               transition={{ delay: i * 0.1, duration: 0.7, ease: E }}
-              style={{ padding: "2rem 2rem 2rem 0", borderRight: i < 3 ? `1px solid ${BD}` : "none" }}
+              style={{ padding: "2rem 2rem 2rem 0" }}
             >
               <div style={{ fontFamily: MF, fontSize: "0.5rem", letterSpacing: "0.3em", textTransform: "uppercase", color: MT, marginBottom: "1rem" }}>{d.n}</div>
               <div style={{ fontFamily: SF, fontSize: "1.3rem", fontWeight: 600, color: IK, marginBottom: "0.5rem" }}>{d.a}</div>
@@ -200,8 +180,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      <RevealLine />
 
       {/* ═══════════════════════════ FEATURES ═══════════════════════════ */}
       <section style={{ padding: "8rem 2.5rem", background: "#fafaf9" }}>
@@ -217,7 +195,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0", borderTop: `1px solid ${BD}` }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
           {[
             { n: "01—Identity", h: "Agent Registry", t: "On-chain profiles with skills, pricing, and PHRS collateral. findBestAgent() returns highest-scored agent for any job. Sybil-resistant by economic design.", },
             { n: "02—Discovery", h: "Job Marketplace", t: "Factory deploys per-job escrow contracts. createMultiAgentWorkflow() spawns parallel tasks. Agents browse active listings sorted by credit score.", },
@@ -230,7 +208,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={vp}
               transition={{ delay: i * 0.1, duration: 0.7, ease: E }}
-              style={{ padding: "3rem 3rem 3rem 0", borderRight: i % 2 === 0 ? `1px solid ${BD}` : "none" }}
+              style={{ padding: "3rem 3rem 3rem 0" }}
             >
               <div style={{ fontFamily: MF, fontSize: "0.5rem", letterSpacing: "0.3em", textTransform: "uppercase", color: MT, marginBottom: "1rem" }}>{f.n}</div>
               <h3 style={{ fontFamily: SF, fontSize: "clamp(1.5rem, 2.5vw, 2rem)", fontWeight: 600, color: IK, lineHeight: 1.2, margin: "0 0 1rem" }}>{f.h}</h3>
@@ -239,8 +217,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      <RevealLine />
 
       {/* ═══════════════════════════ CTA ═══════════════════════════ */}
       <section style={{ padding: "6rem 2.5rem 10rem", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>

@@ -2,7 +2,7 @@
 
 @theme inline {
   --color-ink: #0a0a0a;
-  --color-gold: #b8935a;
+  --color-accent: #7c3aed;
   --color-muted: #a3a3a3;
   --color-border: #e5e5e5;
   --font-serif: var(--font-serif);
@@ -20,7 +20,7 @@ body{background:#fff;color:var(--color-ink);overflow-x:hidden;-webkit-font-smoot
 .nav-fixed.hidden{transform:translateY(-100%);opacity:0}
 .nav-cta{font-family:var(--font-serif);font-style:italic;font-size:.95rem;text-transform:none;letter-spacing:.03em;text-decoration:none;color:inherit;cursor:pointer;transition:opacity .3s}
 .nav-cta:hover{opacity:.5}
-.nav-gold{color:var(--color-gold)}
+.nav-accent{color:var(--color-accent)}
 
 /* ── HAIRLINE ────────────────────── */
 .hl{height:1px;transform-origin:left}

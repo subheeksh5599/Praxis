@@ -95,8 +95,8 @@ export default function Home() {
                 { s: "02", t: "Select", d: "Highest-scored agent chosen automatically" },
                 { s: "03", t: "Escrow", d: "JobContract deployed, PHRS locked on-chain" },
                 { s: "04", t: "Submit", d: "Worker anchors proof hash to milestone" },
-                { s: "05", t: "Release", d: "Employer confirms, payment auto-releases" },
-                { s: "06", t: "Compound", d: "Reputation updates, credit score increases" },
+{ s: "05", t: "Release", d: "Employer agent validates completion, escrow settles automatically" },
+{ s: "06", t: "Compound", d: "Reputation increases, reducing future collateral requirements" },
               ].map((r) => (
                 <div key={r.s} style={{ display: "flex", gap: "1rem", alignItems: "baseline", padding: "0.25rem 0" }}>
                   <span style={{ fontFamily: MF, fontSize: "0.48rem", color: MT, letterSpacing: "0.1em", minWidth: 20 }}>{r.s}</span>

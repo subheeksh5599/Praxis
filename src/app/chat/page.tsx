@@ -131,6 +131,13 @@ export default function ChatPage() {
         className="sidebar"
       >
         <div style={{ padding: "14px 14px 8px" }}>
+          <a href="/" style={{
+            fontFamily: "var(--font-mono), monospace",
+            fontSize: "0.65rem", letterSpacing: "0.3em",
+            textTransform: "uppercase", fontWeight: 500,
+            color: "#7c3aed", textDecoration: "none",
+            display: "block", marginBottom: 14
+          }}>PRAXIS</a>
           <button
             onClick={newChat}
             style={{
@@ -211,7 +218,14 @@ export default function ChatPage() {
               background: "#f9f9f9",
             }}
           >
-            <div style={{ padding: 12 }}>
+            <div style={{ padding: "14px 14px 8px" }}>
+              <a href="/" style={{
+                fontFamily: "var(--font-mono), monospace",
+                fontSize: "0.65rem", letterSpacing: "0.3em",
+                textTransform: "uppercase", fontWeight: 500,
+                color: "#7c3aed", textDecoration: "none",
+                display: "block", marginBottom: 14
+              }}>PRAXIS</a>
               <button
                 onClick={newChat}
                 style={{
@@ -270,21 +284,6 @@ export default function ChatPage() {
             flexShrink: 0,
           }}
         >
-          <a
-            href="/"
-            style={{
-              fontFamily: "var(--font-mono), monospace",
-              fontSize: "0.65rem",
-              letterSpacing: "0.3em",
-              textTransform: "uppercase",
-              fontWeight: 500,
-              color: "#7c3aed",
-              textDecoration: "none",
-              marginBottom: 10,
-            }}
-          >
-            PRAXIS
-          </a>
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <button
               onClick={newChat}

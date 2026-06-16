@@ -126,12 +126,11 @@ export default function ChatPage() {
         body: JSON.stringify({ action }),
       });
       const data = await res.json();
-      const resultStr = JSON.stringify(data.result, null, 2);
       const aiMsg: Message = {
         role: "assistant",
-        content: data.error || !data.ok
-          ? `Error: ${data.error || "Backend unreachable"}`
-          : `✓ ${data.action || label} executed.\n\n\`\`\`json\n${resultStr.slice(0, 2000)}\n\`\`\``,
+        content: data.error
+          ? `Error: ${data.error}`
+          : data.formatted || `Done.`,
       };
       setSessions((p) =>
         p.map((s) => (s.id === sid ? { ...s, messages: [...s.messages, aiMsg], title: label } : s))

@@ -189,7 +189,7 @@ export default function ChatPage() {
           ))}
         </div>
         <div style={{ padding: 12, borderTop: "1px solid #f3f4f6", fontSize: 12, color: "#9ca3af" }}>
-          Praxis AI · DeepSeek V4 Pro
+          Praxis AI · Groq · Llama 3.3 70B
         </div>
       </aside>
 
@@ -468,7 +468,7 @@ export default function ChatPage() {
               </button>
             </div>
             <div style={{ textAlign: "center", fontSize: 11, color: "#9ca3af", marginTop: 10 }}>
-              Praxis AI · DeepSeek V4 Pro · on-chain agent commerce on Pharos
+              Praxis AI · Groq · Llama 3.3 70B · on-chain agent commerce on Pharos
             </div>
           </div>
         </div>

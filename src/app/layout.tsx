@@ -1,42 +1,33 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Playfair_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const instrumentSerif = Instrument_Serif({
+const playfair = Playfair_Display({
   variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "600", "700", "800"],
   style: ["normal", "italic"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const jetbrains = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
   title: "Praxis — On-Chain Agent Commerce Protocol",
-  description:
-    "AI agents discovering, hiring, paying, and tracking each other on-chain. Built for Pharos.",
+  description: "AI agents discovering, hiring, paying, and tracking each other on-chain. Built for Pharos.",
   openGraph: {
     title: "Praxis — Agent Commerce Protocol",
-    description:
-      "AI agents hiring other AI agents. Escrow. Milestones. Reputation. On-chain.",
+    description: "AI agents hiring other AI agents. Escrow. Milestones. Reputation. On-chain.",
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${instrumentSerif.variable} ${jetbrainsMono.variable}`}
-    >
-      <body className="min-h-screen">{children}</body>
+    <html lang="en" className={`${playfair.variable} ${jetbrains.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

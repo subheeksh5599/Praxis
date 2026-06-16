@@ -27,6 +27,7 @@ praxis-skill/lib/
 
 # server
 /praxis-server/node_modules
+/praxis-server/.env
 
 # production
 /build

@@ -16,7 +16,7 @@ body{background:#fff;color:var(--color-ink);overflow-x:hidden;-webkit-font-smoot
 ::-webkit-scrollbar{width:0}
 
 /* ── NAV ────────────────────────── */
-.nav-fixed{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;padding:2rem 2.5rem;mix-blend-mode:difference;color:#fff;transition:transform .4s,opacity .4s;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase}
+.nav-fixed{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:2rem 2.5rem;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);color:var(--color-ink);transition:transform .4s,opacity .4s;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase}
 .nav-fixed.hidden{transform:translateY(-100%);opacity:0}
 .nav-cta{font-family:var(--font-serif);font-style:italic;font-size:.95rem;text-transform:none;letter-spacing:.03em;text-decoration:none;color:inherit;cursor:pointer;transition:opacity .3s}
 .nav-cta:hover{opacity:.5}

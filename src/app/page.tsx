@@ -41,10 +41,8 @@ export default function Home() {
     <main>
       {/* ── NAV ── */}
       <div className={`nav-fixed ${navVis ? "" : "hidden"}`}>
-        <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-          <span>PRAXIS</span>
-          <a className="nav-cta" href="/chat">Ask AI</a>
-        </div>
+        <span>PRAXIS</span>
+        <a className="nav-cta" href="/chat">Ask AI</a>
       </div>
 
       {/* ═══════════════════════════ HERO ═══════════════════════════ */}

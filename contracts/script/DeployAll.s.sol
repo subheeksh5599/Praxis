@@ -36,7 +36,6 @@ contract DeployAll is Script {
 
         stakeVault.setSlashingEngine(address(slashing));
         reputation.setAdmin(address(registry));
-        registry.setAdmin(address(this)); // set to deployer for demo
 
         JobFactory jobFactory = new JobFactory(
             address(registry),

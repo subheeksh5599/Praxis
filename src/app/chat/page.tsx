@@ -89,7 +89,7 @@ export default function ChatPage() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [...(active?.messages || []), userMsg], model: "gpt-4o-mini" }),
+        body: JSON.stringify({ messages: [...(active?.messages || []), userMsg] }),
       });
       const data = await res.json();
       const aiMsg: Message = {
@@ -130,7 +130,14 @@ export default function ChatPage() {
         }}
         className="sidebar"
       >
-        <div style={{ padding: 12 }}>
+        <div style={{ padding: "14px 14px 8px" }}>
+          <a href="/" style={{
+            fontFamily: "var(--font-mono), monospace",
+            fontSize: "0.65rem", letterSpacing: "0.3em",
+            textTransform: "uppercase", fontWeight: 500,
+            color: "#7c3aed", textDecoration: "none",
+            display: "block", marginBottom: 12
+          }}>PRAXIS</a>
           <button
             onClick={newChat}
             style={{
@@ -264,24 +271,28 @@ export default function ChatPage() {
         <div
           style={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "8px 16px",
+            flexDirection: "column",
+            padding: "12px 16px 8px",
             borderBottom: "1px solid #f3f4f6",
             flexShrink: 0,
           }}
         >
+          <a
+            href="/"
+            style={{
+              fontFamily: "var(--font-mono), monospace",
+              fontSize: "0.65rem",
+              letterSpacing: "0.3em",
+              textTransform: "uppercase",
+              fontWeight: 500,
+              color: "#7c3aed",
+              textDecoration: "none",
+              marginBottom: 10,
+            }}
+          >
+            PRAXIS
+          </a>
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <button
-              onClick={() => setShowSidebar(true)}
-              style={{ padding: 8, borderRadius: 12, background: "none", border: "none", cursor: "pointer", color: "#111827", display: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#f3f4f6")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-            </button>
             <button
               onClick={newChat}
               style={{ padding: 8, borderRadius: 12, background: "none", border: "none", cursor: "pointer", color: "#111827" }}
@@ -296,16 +307,6 @@ export default function ChatPage() {
               {active?.title || "Praxis AI"}
             </span>
           </div>
-          <a
-            href="/"
-            style={{ padding: 8, borderRadius: 12, color: "#111827", textDecoration: "none" }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#f3f4f6")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </a>
         </div>
 
         {/* Messages */}

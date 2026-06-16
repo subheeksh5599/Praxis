@@ -273,6 +273,67 @@ contract AgentRegistry {
         }
     }
 
+    function discoverAgents(
+        string calldata _skill,
+        uint256 _minReputation,
+        uint256 _minStake,
+        uint256 _maxPrice,
+        uint256 _limit
+    ) external view returns (Agent[] memory ranked, uint256[] memory scores) {
+        address[] storage matched = agentsBySkill[_skill];
+        uint256 count;
+
+        for (uint256 i = 0; i < matched.length; i++) {
+            Agent memory agent = agents[matched[i]];
+            if (!agent.isActive) continue;
+            if (_maxPrice > 0 && agent.pricePerMilestone > _maxPrice) continue;
+            if (_minReputation > 0 && reputation.getCreditScore(matched[i]) < _minReputation) continue;
+            if (_minStake > 0 && stakeVault.getStake(matched[i]) < _minStake) continue;
+            count++;
+        }
+
+        uint256 resultCount = count < _limit ? count : _limit;
+        if (_limit == 0) resultCount = count;
+        ranked = new Agent[](resultCount);
+        scores = new uint256[](resultCount);
+
+        address[] memory filtered = new address[](count);
+        uint256 idx;
+        for (uint256 i = 0; i < matched.length; i++) {
+            Agent memory agent = agents[matched[i]];
+            if (!agent.isActive) continue;
+            if (_maxPrice > 0 && agent.pricePerMilestone > _maxPrice) continue;
+            if (_minReputation > 0 && reputation.getCreditScore(matched[i]) < _minReputation) continue;
+            if (_minStake > 0 && stakeVault.getStake(matched[i]) < _minStake) continue;
+            filtered[idx++] = matched[i];
+        }
+
+        for (uint256 i = 0; i < resultCount; i++) {
+            uint256 bestScore;
+            uint256 bestIdx;
+            for (uint256 j = 0; j < count; j++) {
+                if (filtered[j] == address(0)) continue;
+                uint256 agentScore = reputation.getCreditScore(filtered[j]);
+                if (agentScore > bestScore) {
+                    bestScore = agentScore;
+                    bestIdx = j;
+                }
+            }
+            ranked[i] = agents[filtered[bestIdx]];
+            scores[i] = bestScore;
+            filtered[bestIdx] = address(0);
+        }
+    }
+
+    function calculateRequiredStake(address _agent) external view returns (uint256) {
+        uint256 score = reputation.getCreditScore(_agent);
+        if (score >= 800) return minStake / 4;       // Diamond: 25% of min
+        if (score >= 600) return minStake / 2;       // Platinum: 50%
+        if (score >= 400) return minStake;           // Gold: base
+        if (score >= 200) return minStake * 2;       // Silver: 2x
+        return minStake * 4;                         // Bronze: 4x
+    }
+
     function setMinStake(uint256 _minStake) external onlyAdmin {
         minStake = _minStake;
     }

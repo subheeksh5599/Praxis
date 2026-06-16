@@ -41,7 +41,7 @@ export default function Home() {
     <main>
       {/* ── NAV ── */}
       <div className={`nav-fixed ${navVis ? "" : "hidden"}`}>
-        <span>PRAXIS</span>
+        <a href="/" style={{ color: "inherit", textDecoration: "none" }}>PRAXIS</a>
         <a className="nav-cta" href="/chat">Ask AI</a>
       </div>
 

@@ -109,6 +109,45 @@ export default function ChatPage() {
     setLoading(false);
   };
 
+  const executeAction = async (action: string, label: string) => {
+    if (loading) return;
+    let sid = activeId;
+    if (!sid) {
+      const s: Session = { id: Date.now().toString(36), title: label, messages: [] };
+      setSessions((p) => [s, ...p]);
+      sid = s.id;
+      setActiveId(s.id);
+    }
+    setLoading(true);
+    try {
+      const res = await fetch("/api/execute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action }),
+      });
+      const data = await res.json();
+      const resultStr = JSON.stringify(data.result, null, 2);
+      const aiMsg: Message = {
+        role: "assistant",
+        content: data.error || !data.ok
+          ? `Error: ${data.error || "Backend unreachable"}`
+          : `✓ ${data.action || label} executed.\n\n\`\`\`json\n${resultStr.slice(0, 2000)}\n\`\`\``,
+      };
+      setSessions((p) =>
+        p.map((s) => (s.id === sid ? { ...s, messages: [...s.messages, aiMsg], title: label } : s))
+      );
+    } catch {
+      setSessions((p) =>
+        p.map((s) =>
+          s.id === sid
+            ? { ...s, messages: [...s.messages, { role: "assistant", content: "Backend not running. Start: cd praxis-server && node --import tsx index.ts" }] }
+            : s
+        )
+      );
+    }
+    setLoading(false);
+  };
+
   const deleteSession = (id: string) => {
     const next = sessions.filter((s) => s.id !== id);
     setSessions(next);
@@ -196,7 +235,7 @@ export default function ChatPage() {
           ))}
         </div>
         <div style={{ padding: 12, borderTop: "1px solid #f3f4f6", fontSize: 12, color: "#9ca3af" }}>
-          Praxis AI · Groq · Llama 3.3 70B
+          Praxis AI
         </div>
       </aside>
 
@@ -314,8 +353,39 @@ export default function ChatPage() {
                 <h1 style={{ fontSize: 26, fontWeight: 600, color: "#111827", marginBottom: 40, letterSpacing: "-0.02em", textAlign: "center" }}>
                   How can I help with Praxis?
                 </h1>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12, maxWidth: 640, width: "100%" }}>
-                  {SUGGESTIONS.map((s) => (
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12, maxWidth: 680, width: "100%" }}>
+                  {[
+                    { label: "Run Autonomous Demo", action: "deploy", desc: "Employer discovers worker, hires, escrow, proof, payment — zero clicks" },
+                    { label: "View Leaderboard", action: "leaderboard", desc: "Top 10 agents by credit score, ranked with tiers" },
+                    { label: "All Agents", action: "agents", desc: "Registered agents with skills, pricing, and reputation" },
+                    { label: "Active Jobs", action: "jobs", desc: "Currently open jobs in the marketplace" },
+                    { label: "Protocol Stats", action: "stats", desc: "Agent count, job count, total volume" },
+                  ].map((a) => (
+                    <button
+                      key={a.action}
+                      onClick={() => executeAction(a.action, a.label)}
+                      disabled={loading}
+                      style={{
+                        textAlign: "left",
+                        padding: "16px 20px",
+                        border: "1px solid #e5e7eb",
+                        borderRadius: 16,
+                        background: loading ? "#f9fafb" : "#fff",
+                        cursor: loading ? "default" : "pointer",
+                        transition: "background 0.15s, border-color 0.15s",
+                        opacity: loading ? 0.5 : 1,
+                      }}
+                      onMouseEnter={(e) => { if (!loading) { e.currentTarget.style.background = "#f0fdf4"; e.currentTarget.style.borderColor = "#86efac"; }}}
+                      onMouseLeave={(e) => { if (!loading) { e.currentTarget.style.background = "#fff"; e.currentTarget.style.borderColor = "#e5e7eb"; }}}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", flexShrink: 0 }} />
+                        <span style={{ fontSize: 15, fontWeight: 600, color: "#111827" }}>{a.label}</span>
+                      </div>
+                      <div style={{ fontSize: 13, color: "#6b7280", paddingLeft: 16 }}>{a.desc}</div>
+                    </button>
+                  ))}
+                  {SUGGESTIONS.slice(0, 3).map((s) => (
                     <button
                       key={s.label}
                       onClick={() => handleSend(s.q)}
@@ -461,7 +531,7 @@ export default function ChatPage() {
               </button>
             </div>
             <div style={{ textAlign: "center", fontSize: 11, color: "#9ca3af", marginTop: 10 }}>
-              Praxis AI · Groq · Llama 3.3 70B · on-chain agent commerce on Pharos
+              Praxis AI &middot; Click a card to execute &middot; Ask questions in the chat
             </div>
           </div>
         </div>

@@ -21,7 +21,7 @@ export default function AutonomousDemo() {
     setRunning(true);
     setDone(false);
     try {
-      const res = await fetch("http://localhost:4000/api/demo/autonomous", { method: "POST" });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000"}/api/demo/autonomous`, { method: "POST" });
       const data = await res.json();
       setSteps(data.steps);
       setEmployer(data.employer?.name || "");

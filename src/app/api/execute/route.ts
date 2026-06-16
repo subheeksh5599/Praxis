@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND = "http://localhost:4000";
+const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
 
 const AGENT_NAMES: Record<string, string> = {
   "0x1111000000000000000000000000000000000001": "ResearchAgent",

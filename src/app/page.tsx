@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import SplashScreen from "@/components/SplashScreen";
+import AutonomousDemo from "@/components/AutonomousDemo";
 
 /* ── SHARED ─────────────────────── */
 const G = "#7c3aed";
@@ -178,6 +179,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <AutonomousDemo />
 
       {/* ═══════════════════════════ FEATURES ═══════════════════════════ */}
       <section style={{ padding: "8rem 2.5rem", background: "#fafaf9" }}>

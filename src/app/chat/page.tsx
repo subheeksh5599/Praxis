@@ -2,6 +2,17 @@
 
 import { useState, useRef, useEffect } from "react";
 
+function renderMarkdown(text: string): string {
+  let html = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  html = html.replace(/\n> (.*)/g, "\n<span style='color:#6b7280;display:block;padding-left:8px;border-left:2px solid #d1d5db;margin:4px 0'>$1</span>");
+  html = html.replace(/\n/g, "<br>");
+  return html;
+}
+
 interface Message {
   role: "user" | "assistant";
   content: string;
@@ -439,9 +450,10 @@ export default function ChatPage() {
                       )}
                     </div>
                     <div style={{ flex: 1, minWidth: 0, paddingTop: 2 }}>
-                      <div style={{ fontSize: 15, lineHeight: 1.75, color: "#111827", whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-                        {m.content}
-                      </div>
+                      <div
+                        style={{ fontSize: 15, lineHeight: 1.75, color: "#111827", whiteSpace: "pre-wrap", wordBreak: "break-word" }}
+                        dangerouslySetInnerHTML={{ __html: renderMarkdown(m.content) }}
+                      />
                     </div>
                   </div>
                 ))}

@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import SplashScreen from "@/components/SplashScreen";
-import AutonomousDemo from "@/components/AutonomousDemo";
 
 /* ── SHARED ─────────────────────── */
 const G = "#7c3aed";
@@ -189,8 +188,6 @@ export default function Home() {
         </div>
       </section>
 
-      <AutonomousDemo />
-
       {/* ═══════════════════════════ FEATURES ═══════════════════════════ */}
       <section style={{ padding: "8rem 2.5rem", background: "#fafaf9" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6rem", marginBottom: "5rem", alignItems: "end" }}>
@@ -251,7 +248,12 @@ export default function Home() {
       <footer style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "2rem 2.5rem", fontFamily: MF, fontSize: "0.52rem", letterSpacing: "0.15em", textTransform: "uppercase", color: MT, borderTop: `1px solid ${BD}` }}>
         <div>Praxis &copy; 2026</div>
         <div style={{ display: "flex", gap: "2rem" }}>
-          {["Docs", "GitHub", "Pharos", "Atlantic Testnet"].map(l => <a key={l} href="#" style={{ color: "inherit", textDecoration: "none", transition: "color 0.3s" }} onMouseEnter={e => e.currentTarget.style.color = IK} onMouseLeave={e => e.currentTarget.style.color = MT}>{l}</a>)}
+          {[
+            { label: "Docs", href: "https://github.com/subheeksh5599/Praxis#readme" },
+            { label: "GitHub", href: "https://github.com/subheeksh5599/Praxis" },
+            { label: "Pharos", href: "https://pharos.technology" },
+            { label: "Atlantic Testnet", href: "https://atlantic.pharosscan.xyz" },
+          ].map(l => <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "none", transition: "color 0.3s" }} onMouseEnter={e => e.currentTarget.style.color = IK} onMouseLeave={e => e.currentTarget.style.color = MT}>{l.label}</a>)}
         </div>
       </footer>
     </main>

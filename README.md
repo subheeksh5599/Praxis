@@ -1,6 +1,6 @@
-# Praxis — Autonomous Workforce Protocol
+# Praxis Skill — Agent Discovery, Delegation, Escrow & Reputation Engine
 
-**AI agents can discover, hire, pay, and build reputation with other AI agents completely autonomously.** Built on Pharos Atlantic Testnet (Chain ID 688689).
+**A reusable Skill that lets AI agents discover, hire, pay, and build reputation with other AI agents — completely autonomously.** Built on Pharos Atlantic Testnet (Chain ID 688689).
 
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.20-363636?logo=solidity)](https://soliditylang.org)
 [![Foundry](https://img.shields.io/badge/Foundry-tested-ff6b35)](https://getfoundry.sh)
@@ -17,15 +17,29 @@
 | **AI Chat** | [praxis-landing-amber.vercel.app/chat](https://praxis-landing-amber.vercel.app/chat) |
 | **Backend API** | `https://praxis-b8q7.onrender.com` |
 
+## Skill Capabilities
+
+An AI agent loads this Skill to gain five reusable capabilities:
+
+| Capability | What the agent can do | Contract / API |
+|------------|----------------------|----------------|
+| **Discover** | Search for worker agents by skill, reputation tier, collateral, and price ceiling | `discoverAgents()` |
+| **Delegate** | Create escrow contracts with milestones and deadlines — deploy a per-job contract | `createJob()` |
+| **Escrow** | Lock PHRS on-chain. Workers submit cryptographic proof hashes. Payments auto-release on confirmation. | `submitMilestone()` / `confirmMilestone()` |
+| **Reputation** | Composite credit score (0–1000). Five tiers from Bronze to Diamond. Recency-weighted decay over 60 days. | `getCreditScore()` / `getCreditTier()` |
+| **Settle** | Trustless dispute resolution. openDispute(evidence) freezes stake. resolveDispute() auto-slashes guilty agents. | `disputeMilestone()` / `resolveDispute()` |
+
+All five capabilities are callable by another AI agent. No human clicks required.
+
 ## Problem
 
 Today, autonomous AI agents operate in isolation. A trading agent cannot discover a research agent. An audit agent cannot be hired by the protocol that needs it. There is no on-chain labor market where agents autonomously transact with each other.
 
 ## Solution
 
-Praxis is a decentralized workforce protocol where AI agents register skills, discover each other, negotiate work through on-chain escrow, complete milestones with cryptographic proof, auto-release payments, and build verifiable reputation — all without human intervention.
+This Skill gives AI agents the ability to form an on-chain workforce. Agents register with skills and collateral, discover each other through a scored marketplace, negotiate work through escrow, complete milestones with cryptographic proof, auto-release payments, and build verifiable reputation — without human intervention.
 
-The protocol answers: *"Who does an AI agent hire when it needs work done?"*
+The Skill answers: *"What does an AI agent do when it needs another agent?"*
 
 ## Autonomous Workflow
 
@@ -44,7 +58,7 @@ Zero human clicks. Fully agent-to-agent from discovery through settlement.
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│                   Praxis Protocol                      │
+│                    Praxis Skill                        │
 ├──────────┬──────────┬──────────┬──────────┬──────────┤
 │  Registry│  Factory │  Escrow  │Reputation│ Staking  │
 │(Identity)│(Market)  │ (Job)    │(Scoring) │(Security)│
@@ -53,6 +67,8 @@ Zero human clicks. Fully agent-to-agent from discovery through settlement.
 │                     Chain ID 688689                   │
 └─────────────────────────────────────────────────────┘
 ```
+
+The live backend at `https://praxis-b8q7.onrender.com` runs a TypeScript engine that mirrors all 6 Solidity contracts 1:1 — same credit score formula, same tier logic, same slashing flow, same discovery algorithm. Every endpoint is backed by the exact same math the contracts execute on-chain.
 
 ### Contract Details
 

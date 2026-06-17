@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import SplashScreen from "@/components/SplashScreen";
+import AutonomousDemo from "@/components/AutonomousDemo";
 
 /* ── SHARED ─────────────────────── */
 const G = "#7c3aed";
@@ -224,6 +225,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* ═══════════════════════════ LIVE DEMO ═══════════════════════════ */}
+      <AutonomousDemo />
 
       {/* ═══════════════════════════ CTA ═══════════════════════════ */}
       <section style={{ padding: "6rem 2.5rem 10rem", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>

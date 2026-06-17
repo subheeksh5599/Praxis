@@ -513,6 +513,103 @@ export function runAutonomousDemo(): { steps: AutonomousStep[]; job: Job; employ
   return { steps, job, employer, worker };
 }
 
+export function runMultiAgentDemo(): { steps: AutonomousStep[]; jobs: Job[]; agents: Agent[] } {
+  const steps: AutonomousStep[] = [];
+
+  const research = findBestAgent("market analysis");
+  if (!research) throw new Error("No research agent registered");
+
+  const audit = findBestAgent("audit", undefined, 200);
+  if (!audit) throw new Error("No audit agent with 200+ reputation");
+
+  const trading = findBestAgent("trading");
+  if (!trading) throw new Error("No trading agent registered");
+
+  const now = Math.floor(Date.now() / 1000);
+  const day = 86400;
+
+  // Step 1: TradingAgent needs research, discovers ResearchAgent
+  steps.push({
+    step: 1,
+    action: "TradingAgent discovers ResearchAgent",
+    detail: `TradingAgent calls discoverAgents("market analysis"). Finds ${research.agent.name} (${getCreditTier(research.agent.address).tier}, ${getCreditScore(research.agent.address)} pts).`,
+    address: research.agent.address,
+  });
+
+  // Step 2: TradingAgent hires ResearchAgent
+  const job1 = createJob(trading.agent.address, research.agent.address, "BTC Market Analysis", "Real-time BTC sentiment and technical analysis report.", [
+    { description: "Submit market analysis report with sentiment scores", payment: "50000000000000000", deadline: now + 7 * day },
+  ]);
+  acceptJob(job1.address, research.agent.address);
+  steps.push({
+    step: 2,
+    action: "TradingAgent → ResearchAgent: Escrow created",
+    detail: `Job deployed. 0.05 PHRS locked. ${research.agent.name} accepts. Status: InProgress.`,
+    address: job1.address,
+    value: "0.05 PHRS",
+  });
+
+  // Step 3: ResearchAgent discovers AuditAgent
+  steps.push({
+    step: 3,
+    action: "ResearchAgent discovers AuditAgent",
+    detail: `ResearchAgent needs smart contract security verified. Calls discoverAgents("audit", minRep=200). Finds ${audit.agent.name} (${getCreditTier(audit.agent.address).tier}, ${getCreditScore(audit.agent.address)} pts).`,
+    address: audit.agent.address,
+  });
+
+  // Step 4: ResearchAgent hires AuditAgent
+  const job2 = createJob(research.agent.address, audit.agent.address, "Smart Contract Fuzz Testing", "Halmos formal verification + Foundry fuzzing on trading strategy contract.", [
+    { description: "Static analysis + vulnerability scan", payment: "50000000000000000", deadline: now + 5 * day },
+    { description: "Formal verification with Halmos", payment: "50000000000000000", deadline: now + 10 * day },
+  ]);
+  acceptJob(job2.address, audit.agent.address);
+  steps.push({
+    step: 4,
+    action: "ResearchAgent → AuditAgent: Escrow created",
+    detail: `Job deployed. 0.1 PHRS locked across 2 milestones. ${audit.agent.name} accepts.`,
+    address: job2.address,
+    value: "0.1 PHRS",
+  });
+
+  // Step 5: AuditAgent submits proof for milestone 1
+  submitMilestone(job1.address, 0, "0x" + Date.now().toString(16).padStart(64, "0"), research.agent.address);
+  steps.push({
+    step: 5,
+    action: "ResearchAgent delivers to TradingAgent",
+    detail: `ResearchAgent submits proof hash for BTC analysis. Awaiting confirmation.`,
+  });
+
+  // Step 6: TradingAgent confirms, pays ResearchAgent
+  confirmMilestone(job1.address, 0, 460, trading.agent.address);
+  steps.push({
+    step: 6,
+    action: "TradingAgent confirms → Payment released",
+    detail: `TradingAgent confirms (4.6/5). 0.05 PHRS paid to ResearchAgent. Reputation updated.`,
+    value: "0.05 PHRS",
+  });
+
+  // Step 7: AuditAgent delivers milestone 1
+  submitMilestone(job2.address, 0, "0x" + Date.now().toString(16).padStart(64, "0"), audit.agent.address);
+  steps.push({
+    step: 7,
+    action: "AuditAgent delivers milestone 1",
+    detail: `AuditAgent submits vulnerability scan results. Awaiting confirmation from ResearchAgent.`,
+  });
+
+  // Step 8: ResearchAgent confirms, pays AuditAgent for milestone 1
+  confirmMilestone(job2.address, 0, 450, research.agent.address);
+  const aScore = getCreditScore(audit.agent.address);
+  const aTier = getCreditTier(audit.agent.address).tier;
+  steps.push({
+    step: 8,
+    action: "ResearchAgent → AuditAgent: Milestone 1 paid",
+    detail: `ResearchAgent confirms (4.5/5). 0.05 PHRS paid to AuditAgent. Reputation: ${aTier} (${aScore} pts). Milestone 2 in progress.`,
+    value: "0.05 PHRS",
+  });
+
+  return { steps, jobs: [job1, job2], agents: [trading.agent, research.agent, audit.agent] };
+}
+
 export function resetDemoState() {
   agents.clear();
   jobs.clear();

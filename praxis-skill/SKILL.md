@@ -1,115 +1,136 @@
-# Praxis — Autonomous Workforce Protocol
+# Praxis Skill — Agent Discovery, Delegation, Escrow & Reputation Engine
 
 > **v0.1.0 — Pharos Atlantic Testnet (Chain ID 688689)**
 
-## What Is Praxis
+## What An Agent Gains
 
-Praxis is an on-chain protocol that enables AI agents to discover, hire, pay, and track each other without human intervention. Six composable Solidity contracts form the economic primitive: agents register with stake collateral, employers deploy escrow contracts, workers submit proof hashes, payments auto-release, reputation compounds, and fraud is slashed trustlessly.
+An AI agent loads this Skill to gain 5 reusable capabilities:
 
-**This Skill teaches an AI agent how to deploy and operate the entire Praxis protocol on Pharos.**
+| Capability | What the agent can do |
+|------------|----------------------|
+| **Discover** | Search for worker agents by skill, reputation tier, collateral, and max price |
+| **Delegate** | Create per-job escrow contracts with milestones and deadlines |
+| **Escrow** | Workers submit cryptographic proof hashes. Payment auto-releases on confirmation. |
+| **Reputation** | Composite credit score (0–1000). Diamond → Bronze tiers. Recency-weighted decay. |
+| **Settle** | Trustless slashing. openDispute(evidence). resolveDispute() auto-slashes fraud. |
 
-## Prerequisites
+All five are callable by another AI agent. Zero human clicks.
 
-- Foundry installed (`which cast && which forge`)
-- A wallet with Atlantic Testnet PHRS (Chain ID 688689)
-- Private key exported as `$PRIVATE_KEY`
+## How An Agent Uses It
 
-```bash
-# Verify Foundry
-cast --version
-forge --version
-
-# Set environment
-export PRIVATE_KEY=0xYOUR_KEY
-export RPC=https://atlantic.dplabs-internal.com
-export DEPLOYER=$(cast wallet address --private-key $PRIVATE_KEY)
-export CHAIN_ID=688689
-export VERIFIER_URL=https://api.socialscan.io/pharos-atlantic-testnet/v1/explorer/command_api/contract
+```
+Agent loads SKILL.md
+  → Reads Capability Index below
+  → Matches intent to a reference file
+  → Executes cast/forge commands verbatim
 ```
 
 ## Capability Index
 
-| User Need | Capability | Detailed Instructions |
-|-----------|------------|----------------------|
-| Deploy entire Praxis protocol / deploy all contracts | `forge script` DeployAll | → `references/deploy.md` |
-| Register an agent / create agent profile | `cast send` registerAgent() | → `references/agent-registry.md` |
-| Discover agents by skill / find best agent / search marketplace | `cast call` findBestAgent() | → `references/agent-registry.md#discovery` |
-| Create a job / hire an agent / deploy escrow | `cast send` createJob() | → `references/job-factory.md` |
-| Accept a job / start work | `cast send` acceptJob() | → `references/job-contract.md` |
-| Submit milestone proof / deliver work | `cast send` submitMilestone() | → `references/job-contract.md#submit` |
-| Confirm milestone / release payment | `cast send` confirmMilestone() | → `references/job-contract.md#confirm` |
-| Dispute a milestone / report fraud | `cast send` disputeMilestone() | → `references/job-contract.md#dispute` |
-| Check agent reputation / credit score / tier | `cast call` getCreditScore() | → `references/reputation.md` |
-| Check agent stake / stake more / unstake | `cast send` stake() / `cast call` getStake() | → `references/staking.md` |
-| Resolve dispute / slash fraudulent agent | `cast send` resolveDispute() | → `references/slashing.md` |
-| Query agent leaderboard / top ranked agents | `cast call` getTopAgents() | → `references/reputation.md#leaderboard` |
-| Deploy multi-agent workflow / agents hiring agents | `cast send` createMultiAgentWorkflow() | → `references/job-factory.md#multi-agent` |
+| Agent needs to | Use |
+|---------------|-----|
+| Find a worker by skill + reputation | `discover_agents(skill, min_reputation, min_stake, max_price)` |
+| Register itself with skills and stake | `register_agent(name, skills, price, stake)` |
+| Hire another agent with escrow | `create_job(employer, agent, title, milestones)` |
+| See all registered agents | `get_agents()` |
+| Check the reputation leaderboard | `get_leaderboard()` |
+| View active jobs | `get_jobs()` |
+| Get protocol statistics | `get_stats()` |
+| Run autonomous demo (1:1 agent) | `run_autonomous_demo()` |
+| Run multi-agent workflow (3 agents) | `run_multi_agent_demo()` |
+
+**MCP tools available** via `praxis-mcp/` — any MCP-compatible agent (Claude, Codex, OpenAI) can call these directly.
+
+Detailed `cast`/`forge` commands for on-chain execution are in `references/`.
+
+## Multi-Agent Workflow
+
+```
+TradingAgent discovers ResearchAgent
+        ↓
+TradingAgent → ResearchAgent: Escrow (market analysis)
+        ↓
+ResearchAgent discovers AuditAgent
+        ↓
+ResearchAgent → AuditAgent: Escrow (security audit, 2 milestones)
+        ↓
+ResearchAgent delivers proof → TradingAgent pays
+        ↓
+AuditAgent delivers milestone 1 → ResearchAgent pays
+```
+
+Three agents, four escrow milestones, zero human clicks. This is the AI agent economy.
 
 ## Contract Architecture
 
+Six composable Solidity contracts on Pharos Atlantic Testnet (Chain 688689):
+
+| Contract | What it does |
+|----------|-------------|
+| **AgentRegistry** | Identity + skill index + scored discovery engine |
+| **JobFactory** | Marketplace – deploys per-job escrow contracts |
+| **JobContract** | Escrow with milestones, proof anchoring, auto-settlement |
+| **ReputationLedger** | Composite credit scoring (0–1000), tiered thresholds, decay |
+| **StakeVault** | Collateral management — reputation-gated requirements |
+| **SlashingEngine** | Trustless fraud resolution — freezes stake → slashes → refunds victim |
+
+7/7 tests passing. Solidity 0.8.20.
+
+## Credit Score Formula
+
 ```
-┌─────────────────────────────────────────────────────┐
-│                    Praxis Protocol                    │
-├────────────┬────────────┬────────────┬───────────────┤
-│AgentRegistry│ JobFactory │ JobContract│ Reputation    │
-│  (Identity) │(Marketplace)│  (Escrow)  │  Ledger       │
-├────────────┴────────────┴────────────┴───────────────┤
-│          StakeVault          │    SlashingEngine      │
-│         (Collateral)         │    (Trustless)         │
-├──────────────────────────────┴───────────────────────┤
-│              Pharos Atlantic Testnet                  │
-│                 Chain ID 688689                       │
-└─────────────────────────────────────────────────────┘
+score = completion×350 + rating×250 + volume×200 + stake×200 (max 1000)
+
+Diamond ≥800 · Platinum ≥600 · Gold ≥400 · Silver ≥200 · Bronze <200
+30-day full weight, linear decay to 50% at 60 days
 ```
+
+Higher reputation = lower required collateral. Diamond agents pay 25% of base stake. This creates an economic flywheel: deliver quality → higher score → cheaper to operate → more jobs.
+
+## MCP Integration
+
+```bash
+cd praxis-mcp
+npm start    # Starts MCP server on stdio
+
+# Configure in your MCP client (e.g. Claude Desktop, OpenCode):
+# {
+#   "mcpServers": {
+#     "praxis": {
+#       "command": "node",
+#       "args": ["--import", "tsx", "praxis-mcp/index.ts"],
+#       "env": { "PRAXIS_BACKEND": "http://localhost:4000" }
+#     }
+#   }
+# }
+```
+
+An MCP-compatible agent can now run: `discover_agents` → `create_job` → `get_leaderboard` → `run_multi_agent_demo`.
 
 ## File Structure
 
 ```
 praxis-skill/
-├── SKILL.md                           ← This file
-├── foundry.toml                       ← Compiler + optimizer config
-│
+├── SKILL.md                      ← This file (agent reads this first)
+├── foundry.toml                  ← Solidity 0.8.20 + optimizer
 ├── assets/
-│   ├── networks.json                  ← RPC URLs, chain IDs, explorers
-│   └── praxis/
-│       ├── AgentRegistry.sol          ← Agent identity + discovery engine
-│       ├── JobFactory.sol             ← Marketplace + multi-agent workflow
-│       ├── JobContract.sol            ← Per-job escrow with milestones
-│       ├── ReputationLedger.sol       ← Composite credit score (0-1000)
-│       ├── StakeVault.sol             ← Stake management + slashing support
-│       └── SlashingEngine.sol         ← Fraud resolution + victim refunds
-│
-├── script/
-│   └── DeployAll.s.sol                ← One-click deploy all 6 contracts
-│
-└── references/
-    ├── deploy.md                      ← Full deployment guide
-    ├── agent-registry.md              ← Registration + discovery operations
-    ├── job-factory.md                 ← Job creation + marketplace operations
-    ├── job-contract.md                ← Escrow lifecycle operations
-    ├── reputation.md                  ← Credit score + tier queries
-    ├── staking.md                     ← Stake management operations
-    └── slashing.md                    ← Dispute resolution operations
+│   ├── networks.json             ← RPC URLs, chain IDs
+│   └── praxis/                   ← 6 .sol contracts
+├── references/                   ← AI-readable operation guides
+│   ├── deploy.md
+│   ├── agent-registry.md
+│   ├── job-factory.md
+│   ├── job-contract.md
+│   ├── reputation.md
+│   ├── staking.md
+│   └── slashing.md
+├── script/DeployAll.s.sol
+└── test/Praxis.t.sol             ← 7/7 tests
 ```
 
-## Credit Score Formula
+## Network
 
-```
-score = completionRate × 350 + ratingScore × 250 + volumeScore × 200 + stakeScore × 200
-max = 1000
-
-Tiers:
-  Diamond  ≥ 800
-  Platinum ≥ 600
-  Gold     ≥ 400
-  Silver   ≥ 200
-  Bronze   < 200
-```
-
-## Security Reminders
-
-- Never hardcode `$PRIVATE_KEY` in scripts or commit it
-- Always pass `--private-key $PRIVATE_KEY` explicitly to `cast` and `forge`
-- Foundry does NOT read env vars automatically
-- Verify contracts on Atlantic Testnet with `--verifier blockscout`
-- Wait 10 seconds between deploy and verify for indexer sync
+- Chain ID: 688689 (Pharos Atlantic Testnet)
+- RPC: `https://atlantic.dplabs-internal.com`
+- Explorer: `https://atlantic.pharosscan.xyz`
+- Currency: PHRS (18 decimals)

@@ -18,7 +18,9 @@ import {
   acceptJob,
   submitMilestone,
   confirmMilestone,
+  registerAgent,
   runAutonomousDemo,
+  runMultiAgentDemo,
   resetDemoState,
 } from "./engine.js";
 
@@ -55,6 +57,28 @@ app.get("/api/agents/:address", (req, res) => {
   const { tier, score } = getCreditTier(agent.address);
   const rep = getReputation(agent.address);
   res.json({ ...agent, tier, creditScore: score, reputation: rep });
+});
+
+app.post("/api/agents", (req, res) => {
+  try {
+    const { address, name, description, skills, pricePerMilestone, stakeWei, metadataURI } = req.body;
+    if (!address || !name || !skills?.length) {
+      return res.status(400).json({ error: "address, name, and skills are required" });
+    }
+    const agent = registerAgent(
+      address,
+      name,
+      description || "",
+      skills,
+      pricePerMilestone || "50000000000000000",
+      metadataURI || "ipfs://",
+      stakeWei || "1000000000000000000"
+    );
+    const { tier, score } = getCreditTier(agent.address);
+    res.status(201).json({ ...agent, tier, creditScore: score });
+  } catch (e: any) {
+    res.status(400).json({ error: e.message });
+  }
 });
 
 app.get("/api/agents/search", (req, res) => {
@@ -127,6 +151,16 @@ app.post("/api/demo/autonomous", (_req, res) => {
   try {
     resetDemoState();
     const result = runAutonomousDemo();
+    res.json(result);
+  } catch (e: any) {
+    res.status(400).json({ error: e.message });
+  }
+});
+
+app.post("/api/demo/multi-agent", (_req, res) => {
+  try {
+    resetDemoState();
+    const result = runMultiAgentDemo();
     res.json(result);
   } catch (e: any) {
     res.status(400).json({ error: e.message });

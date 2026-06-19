@@ -184,7 +184,7 @@ export default function ChatPage() {
             fontFamily: "var(--font-mono), monospace",
             fontSize: "0.65rem", letterSpacing: "0.3em",
             textTransform: "uppercase", fontWeight: 500,
-            color: "#7c3aed", textDecoration: "none",
+            color: "#0a0a0a", textDecoration: "none",
             display: "block", marginBottom: 14
           }}>PRAXIS</a>
           <button
@@ -272,7 +272,7 @@ export default function ChatPage() {
                 fontFamily: "var(--font-mono), monospace",
                 fontSize: "0.65rem", letterSpacing: "0.3em",
                 textTransform: "uppercase", fontWeight: 500,
-                color: "#7c3aed", textDecoration: "none",
+                color: "#0a0a0a", textDecoration: "none",
                 display: "block", marginBottom: 14
               }}>PRAXIS</a>
               <button

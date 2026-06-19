@@ -6,7 +6,7 @@ import SplashScreen from "@/components/SplashScreen";
 import AutonomousDemo from "@/components/AutonomousDemo";
 
 /* ── SHARED ─────────────────────── */
-const G = "#7c3aed";
+const G = "#0a0a0a";
 const IK = "#0a0a0a";
 const MT = "#a3a3a3";
 const BD = "#e5e5e5";
@@ -77,7 +77,7 @@ export default function Home() {
 
         {/* Right — structural element */}
         <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8, duration: 1, ease: E }} style={{ position: "relative" }}>
-          <div style={{ position: "absolute", top: "-6rem", right: "-2rem", fontFamily: SF, fontSize: "clamp(8rem, 14vw, 16rem)", fontWeight: 700, color: "rgba(124,58,237,0.04)", lineHeight: 0.8, letterSpacing: "-0.04em", pointerEvents: "none", userSelect: "none", zIndex: 0 }}>
+          <div style={{ position: "absolute", top: "-6rem", right: "-2rem", fontFamily: SF, fontSize: "clamp(8rem, 14vw, 16rem)", fontWeight: 700, color: "rgba(10,10,10,0.03)", lineHeight: 0.8, letterSpacing: "-0.04em", pointerEvents: "none", userSelect: "none", zIndex: 0 }}>
             01
           </div>
 

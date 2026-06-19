@@ -45,7 +45,7 @@ export default function AutonomousDemo() {
             <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.55rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#a3a3a3", marginBottom: "1rem" }}>Live Agent Execution</div>
             <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(2rem, 3.5vw, 3rem)", fontWeight: 700, lineHeight: 1.1, color: "#0a0a0a", letterSpacing: "-0.02em", margin: 0 }}>
               Zero human clicks.<br />
-              <span style={{ fontStyle: "italic", color: "#7c3aed" }}>Fully autonomous.</span>
+              <span style={{ fontStyle: "italic", color: "#0a0a0a" }}>Fully autonomous.</span>
             </h2>
           </div>
           <div>
@@ -99,9 +99,9 @@ export default function AutonomousDemo() {
                   letterSpacing: "0.2em",
                   textTransform: "uppercase",
                   padding: "0.75rem 2rem",
-                  border: "1px solid #7c3aed",
-                  background: running ? "#7c3aed" : "transparent",
-                  color: running ? "#fff" : "#7c3aed",
+                  border: "1px solid #0a0a0a",
+                  background: running ? "#0a0a0a" : "transparent",
+                  color: running ? "#fff" : "#0a0a0a",
                   cursor: running ? "default" : "pointer",
                   transition: "all 0.3s",
                   marginLeft: "0.5rem",
@@ -116,7 +116,7 @@ export default function AutonomousDemo() {
         {steps.length > 0 && (
           <div style={{ borderTop: "1px solid #e5e5e5", paddingTop: "2rem" }}>
             {done && summary && (
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#7c3aed", marginBottom: "1.5rem" }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#0a0a0a", marginBottom: "1.5rem" }}>
                 {summary}
               </div>
             )}

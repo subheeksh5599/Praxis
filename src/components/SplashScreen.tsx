@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const LETTERS = "PRAXIS".split("");
-const GOLD = "#7c3aed";
+const GOLD = "#0a0a0a";
 
 export default function SplashScreen({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState<"typing" | "hold" | "exit">("typing");
